@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class NomeServiceTest {
 
@@ -23,7 +24,7 @@ public class NomeServiceTest {
     @Test
     public void quandoObtemNomesClienteSucesso() {
         Cliente cliente = new Cliente();
-        cliente.setName("João Soares Silva");
+        cliente.setNome("João Soares Silva");
         NomeDto clienteResponse = service.obterNomes(cliente);
         assertEquals(nomesSucesso().getClass(), clienteResponse.getClass());
     }
@@ -31,7 +32,7 @@ public class NomeServiceTest {
     @Test
     public void quandoObtemNomesGerenteSucesso() {
         Gerente gerente = new Gerente();
-        gerente.setName("João Soares Silva");
+        gerente.setNome("João Soares Silva");
         NomeDto gerenteResponse = service.obterNomes(gerente);
         assertEquals(nomesSucesso().getClass(), gerenteResponse.getClass());
     }
@@ -39,10 +40,43 @@ public class NomeServiceTest {
     @Test
     public void quandoObtemNomesRoboSucesso() {
         Robo robo = new Robo();
-        robo.setName("João Soares Silva");
+        robo.setNome("João Soares Silva");
         NomeDto roboResponse = service.obterNomes(robo);
         assertEquals(nomesSucesso().getClass(), roboResponse.getClass());
     }
+
+    @Test
+    public void quandoNomePossuiEspacoComeco() {
+        Gerente gerente = new Gerente();
+        gerente.setNome(" João Soares Silva");
+        NomeDto roboResponse = service.obterNomes(gerente);
+        assertNull(roboResponse);
+    }
+
+    @Test
+    public void quandoNomePossuiEspacoFim() {
+        Cliente cliente = new Cliente();
+        cliente.setNome("João Soares Silva ");
+        NomeDto roboResponse = service.obterNomes(cliente);
+        assertNull(roboResponse);
+    }
+
+    @Test
+    public void quandoNomeNulo() {
+        Cliente cliente = new Cliente();
+        cliente.setNome(null);
+        NomeDto roboResponse = service.obterNomes(cliente);
+        assertNull(roboResponse);
+    }
+
+    @Test
+    public void quandoEspaco() {
+        Cliente cliente = new Cliente();
+        cliente.setNome(" ");
+        NomeDto roboResponse = service.obterNomes(cliente);
+        assertNull(roboResponse);
+    }
+
 
     private NomeDto nomesSucesso() {
 

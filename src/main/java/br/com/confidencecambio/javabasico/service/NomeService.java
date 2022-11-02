@@ -9,12 +9,23 @@ import org.springframework.stereotype.Service;
 public class NomeService {
 
     public NomeDto obterNomes(Usuario usuario) {
+
+        String nome = usuario.getNome();
+
+        if (nome == null) {
+            return null;
+        }
+
+        if (nome.isBlank() || nome.startsWith(" ") || nome.endsWith(" ")) {
+            return null;
+        }
+
         var nomes = new NomeDto();
 
-        nomes.setPrimeiroNome(obterPrimeiroNome(usuario.getName()));
-        nomes.setUltimoNome(obterUltimoNome(usuario.getName()));
-        nomes.setNomeMaiusculo(usuario.getName().toUpperCase());
-        nomes.setNomeAbreviado(obterNomeAbreviado(usuario.getName()));
+        nomes.setPrimeiroNome(obterPrimeiroNome(nome));
+        nomes.setUltimoNome(obterUltimoNome(nome));
+        nomes.setNomeMaiusculo(nome.toUpperCase());
+        nomes.setNomeAbreviado(obterNomeAbreviado(nome));
 
         return nomes;
 
@@ -26,7 +37,7 @@ public class NomeService {
 
     private String obterUltimoNome(String request) {
         var i = request.split(" ").length;
-        return request.split(" ")[(i-1)];
+        return request.split(" ")[(i - 1)];
     }
 
     private String obterNomeAbreviado(String request) {
